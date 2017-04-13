@@ -154,12 +154,13 @@ def test_utf16_encoding():
     test_file = "test-utf16-encoding.csv"
     writer = CSVFileWriter(
         test_file, None,
-        encoding="utf-16", lineterminator="\n")
+        encoding="utf-16", lineterminator='\n')
     writer.write_array(content)
     writer.close()
     with open(test_file, "rb") as f:
         actual = f.read().decode('utf-16')
         if PY2:
+            # needed for comparision only
             actual = actual.encode('utf-8')
         eq_(actual, 'Äkkilähdöt,Matkakirjoituksia,Matkatoimistot\n')
     os.unlink(test_file)
@@ -173,6 +174,7 @@ def test_utf16_memory_decoding():
         encoding="utf-16")
     content = list(reader.to_array())
     if PY2:
+        # needed for comparision only
         content[0] = [s.encode('utf-8') for s in content[0]]
     expected = [['Äkkilähdöt', 'Matkakirjoituksia', 'Matkatoimistot']]
     eq_(content, expected)
@@ -182,10 +184,8 @@ def test_utf16_memory_encoding():
     content = [[u'Äkkilähdöt', u'Matkakirjoituksia', u'Matkatoimistot']]
     io = StringIO()
     writer = CSVMemoryWriter(
-        io, None, lineterminator="\n", single_sheet_in_book=True,
-        encoding="utf-16")
+        io, None, lineterminator='\n', encoding="utf-16",
+        single_sheet_in_book=True)
     writer.write_array(content)
     actual = io.getvalue()
-    if PY2:
-        actual = actual.decode('utf-16')
     eq_(actual, u'Äkkilähdöt,Matkakirjoituksia,Matkatoimistot\n')

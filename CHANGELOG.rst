@@ -11,6 +11,14 @@ Updated
 #. `#19 <https://github.com/pyexcel/pyexcel-io/issues/19>`_,
    use cString by default
 
+0.4.0 - unreleased
+--------------------------------------------------------------------------------
+
+Removed
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#. Removed internal csv support in python2. Added backports.csv as dependency
+
 0.3.3 - 30.03.2017
 --------------------------------------------------------------------------------
 

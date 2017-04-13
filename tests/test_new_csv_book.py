@@ -3,7 +3,7 @@ from unittest import TestCase
 from textwrap import dedent
 from nose.tools import raises
 import pyexcel_io.manager as manager
-from pyexcel_io._compact import OrderedDict
+from pyexcel_io._compact import OrderedDict, PY2
 from pyexcel_io.fileformat._csv import CSVBookReader, CSVBookWriter
 from pyexcel_io.fileformat.tsv import TSVBookReader, TSVBookWriter
 

@@ -56,7 +56,7 @@ Change line endings
 By default, python csv module provides windows line ending '\r\n'. In order
 to change it, you can do:
    
-   >>> save_data("your_file.csv", data, lineterminator='\n')
+   >>> save_data("your_file.csv", data)
 
 Read from a csv file
 --------------------------------------------------------------------------------

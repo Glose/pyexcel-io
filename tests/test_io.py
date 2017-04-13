@@ -1,17 +1,19 @@
 import os
-import sys
+import io
 from unittest import TestCase
 import pyexcel_io.manager as manager
 import pyexcel_io.exceptions as exceptions
 from pyexcel_io._compact import StringIO, BytesIO, is_string
-from pyexcel_io._compact import OrderedDict
+from pyexcel_io._compact import OrderedDict, PY2
 from pyexcel_io import save_data, get_data
 from pyexcel_io.io import load_data, get_writer
 from nose.tools import raises, eq_
 from zipfile import BadZipfile
 
-
-PY2 = sys.version_info[0] == 2
+if PY2:
+    LINE_TERMINATOR = u'\n'
+else:
+    LINE_TERMINATOR = '\n'
 
 
 @raises(IOError)
@@ -169,7 +171,7 @@ def test_file_handle_as_input():
     with open(test_file, 'w') as f:
         f.write("1,2,3")
 
-    with open(test_file, 'r') as f:
+    with io.open(test_file, 'r') as f:
         data = get_data(f, 'csv')
         eq_(data['csv'], [[1, 2, 3]])
 
@@ -179,7 +181,7 @@ def test_file_type_case_insensitivity():
     with open(test_file, 'w') as f:
         f.write("1,2,3")
 
-    with open(test_file, 'r') as f:
+    with io.open(test_file, 'r') as f:
         data = get_data(f, 'csv')
         eq_(data['csv'], [[1, 2, 3]])
 
@@ -187,7 +189,8 @@ def test_file_type_case_insensitivity():
 def test_file_handle_as_output():
     test_file = "file_handle.csv"
     with open(test_file, 'w') as f:
-        save_data(f, [[1, 2, 3]], 'csv', lineterminator='\n')
+        save_data(f, [[1, 2, 3]], 'csv',
+                  lineterminator=LINE_TERMINATOR)
 
     with open(test_file, 'r') as f:
         content = f.read()

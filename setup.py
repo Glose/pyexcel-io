@@ -51,6 +51,8 @@ INSTALL_REQUIRES = [
 
 if PY26:
     INSTALL_REQUIRES.append('ordereddict')
+if PY2:
+    INSTALL_REQUIRES.append('backports.csv')
 
 PACKAGES = find_packages(exclude=['ez_setup', 'examples', 'tests'])
 EXTRAS_REQUIRE = {
