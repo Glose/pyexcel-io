@@ -17,12 +17,10 @@ from .constants import (
 )
 
 
-class RWInterface(with_metaclass(Plugin, object)):
+class RWInterface(object):
     """
     The common methods for book reader and writer
     """
-    plugin_type = "pyexcel io plugin"
-    library = "built-in"
     stream_type = None
 
     def __init__(self):
@@ -58,17 +56,19 @@ class RWInterface(with_metaclass(Plugin, object)):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, a_type, value, traceback):
         self.close()
 
 
-class BookReader(RWInterface):
+class BookReader(with_metaclass(Plugin, RWInterface)):
     """
     Standard book reader
     """
+    plugin_type = "pyexcel-io reader"
     action = "read"
 
     def __init__(self):
+        RWInterface.__init__(self)
         self._file_name = None
         self._file_stream = None
         self._keywords = None
@@ -156,13 +156,15 @@ class BookReader(RWInterface):
         raise NotImplementedError("Please implement this method")
 
 
-class BookWriter(RWInterface):
+class BookWriter(with_metaclass(Plugin, RWInterface)):
     """
     Standard book writer
     """
+    plugin_type = "pyexcel-io writer"
     action = "write"
 
     def __init__(self):
+        RWInterface.__init__(self)
         self._file_alike_object = None
         self._keywords = None
 
@@ -186,6 +188,9 @@ class BookWriter(RWInterface):
         self.open(file_stream, **keywords)
 
     def write(self, incoming_dict):
+        """
+        write a dictionary into an excel file
+        """
         for sheet_name in incoming_dict:
             sheet_writer = self.create_sheet(sheet_name)
             if sheet_writer:
@@ -200,14 +205,14 @@ class BookWriter(RWInterface):
 
 
 def _convert_content_to_stream(file_content, file_type):
-    io = manager.get_io(file_type)
+    stream = manager.get_io(file_type)
     if PY2:
-        io.write(file_content)
+        stream.write(file_content)
     else:
-        if (isinstance(io, StringIO) and isinstance(file_content, bytes)):
+        if isinstance(stream, StringIO) and isinstance(file_content, bytes):
             content = file_content.decode('utf-8')
         else:
             content = file_content
-        io.write(content)
-    io.seek(0)
-    return io
+        stream.write(content)
+    stream.seek(0)
+    return stream
