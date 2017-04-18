@@ -7,13 +7,17 @@
     :copyright: (c) 2014-2017 by Onni Software Ltd.
     :license: New BSD License, see LICENSE for more details
 """
-import csv
-import codecs
+import io
 
 from pyexcel_io.book import BookWriter
 from pyexcel_io.sheet import SheetWriter
 import pyexcel_io._compact as compact
 import pyexcel_io.constants as constants
+
+if compact.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 DEFAULT_SEPARATOR = '__'
@@ -69,8 +73,8 @@ class CSVFileWriter(CSVSheetWriter):
                 names[1])
         else:
             file_name = self._native_book
-        self.f = open(file_name, "w", newline="",
-                      encoding=self._encoding)
+        self.f = io.open(file_name, "w", newline="",
+                         encoding=self._encoding)
         self.writer = csv.writer(self.f, **self._keywords)
 
 
@@ -84,13 +88,8 @@ class CSVMemoryWriter(CSVSheetWriter):
                                 sheet_index=sheet_index, **keywords)
 
     def set_sheet_name(self, name):
-        if compact.PY2:
-            self.f = self._native_book
-            self.writer = UnicodeWriter(self.f, encoding=self._encoding,
-                                        **self._keywords)
-        else:
-            self.f = self._native_book
-            self.writer = csv.writer(self.f, **self._keywords)
+        self.f = self._native_book
+        self.writer = csv.writer(self.f, **self._keywords)
         if not self._single_sheet_in_book:
             self.writer.writerow([DEFAULT_CSV_STREAM_FILE_FORMATTER % (
                 self._sheet_name,

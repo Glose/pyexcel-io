@@ -239,7 +239,7 @@ class TestWriteMultipleSheets(TestCase):
     def test_multiple_sheet_into_memory(self):
         io = manager.get_io(self.file_type)
         w = self.writer_class()
-        w.open(io, lineterminator='\n')
+        w.open(io, lineterminator=u'\n')
         w.write(self.sheets)
         w.close()
         content = io.getvalue()
@@ -249,11 +249,11 @@ class TestWriteMultipleSheets(TestCase):
         """Write csv book into a single stream"""
         io = manager.get_io(self.file_type)
         w = self.writer_class()
-        w.open(io, lineterminator='\n')
+        w.open(io, lineterminator=u'\n')
         w.write(self.sheets)
         w.close()
         reader = self.reader_class()
-        reader.open_stream(io, lineterminator='\n')
+        reader.open_stream(io, lineterminator=u'\n')
         sheets = reader.read_all()
         for sheet in sheets:
             sheets[sheet] = list(sheets[sheet])
