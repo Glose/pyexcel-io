@@ -17,6 +17,8 @@ from pyexcel_io._compact import BytesIO, PY2, StringIO
 
 
 class TestReaders(TestCase):
+    delimiter = ","
+
     def setUp(self):
         self.file_type = "csv"
         self.test_file = "csv_book." + self.file_type
@@ -24,7 +26,7 @@ class TestReaders(TestCase):
         self.expected_data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
         with open(self.test_file, "w") as f:
             for row in self.data:
-                f.write(",".join(row) + "\n")
+                f.write(self.delimiter.join(row) + "\n")
 
     @raises(NotImplementedError)
     def test_sheet_reader(self):
@@ -47,6 +49,10 @@ class TestReaders(TestCase):
 
     def tearDown(self):
         os.unlink(self.test_file)
+
+
+class TestReadersWithSemicolon(TestReaders):
+    delimiter = ";"
 
 
 class TestWriter(TestCase):
@@ -108,7 +114,7 @@ class TestNonUniformCSV(TestCase):
                 f.write(",".join(row) + "\n")
 
     def test_sheet_file_reader(self):
-        r = CSVFileReader(NamedContent(self.file_type, self.test_file))
+        r = CSVFileReader(NamedContent(self.file_type, self.test_file), auto_detect_delimiter=False)
         result = list(r.to_array())
         self.assertEqual(result, [[1], [4, 5, 6], ["", 7]])
 
