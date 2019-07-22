@@ -160,9 +160,10 @@ class CSVSheetReader(SheetReader):
             try:
                 # csv.Sniffer() can raise Error() if no delimiters are found
                 dialect = csv.Sniffer().sniff(first_line)
-                self._keywords['delimiter'] = dialect.delimiter
             except csv.Error:
                 pass
+            else:
+                self._keywords['delimiter'] = dialect.delimiter
             finally:
                 self.__file_handle.seek(0)
         return csv.reader(self.__file_handle, **self._keywords)
