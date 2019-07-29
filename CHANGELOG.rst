@@ -2,7 +2,7 @@ Change log
 ================================================================================
 
 #. fixed get_data() calls with empty afile
-#. detect CSV delimiter. Detection can be switched off by `auto_detect_delimiter`
+#. detect CSV delimiter. Detection can be switched off by `auto_detect_delimiter`. By default, only [',', '\t', ';', ' ', ':'] are accepted as delimiters; this can be overridden with the `delimiters` parameter.
 
 0.5.20 - 17.7.2019
 --------------------------------------------------------------------------------

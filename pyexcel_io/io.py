@@ -36,6 +36,7 @@ def iget_data(afile, file_type=None, **keywords):
     :param auto_detect_int: defaults to True
     :param auto_detect_delimiter: defaults to True
     :param auto_detect_datetime: defaults to True
+    :param delimiters: defaults to [',', '\t', ';', ' ', ':']
     :param ignore_infinity: defaults to True
     :param ignore_nan_text: various forms of 'NaN', 'nan' are ignored
     :param default_float_nan: choose one form of 'NaN', 'nan'
@@ -63,7 +64,9 @@ def get_data(afile, file_type=None, streaming=None, **keywords):
                     e.g. library='pyexcel-ods'
     :param auto_detect_float: defaults to True
     :param auto_detect_int: defaults to True
+    :param auto_detect_delimiter: defaults to True
     :param auto_detect_datetime: defaults to True
+    :param delimiters: defaults to [',', '\t', ';', ' ', ':']
     :param ignore_infinity: defaults to True
     :param keywords: any other library specific parameters
     :returns: an ordered dictionary
