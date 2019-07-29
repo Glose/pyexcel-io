@@ -18,12 +18,12 @@ from pyexcel_io._compact import BytesIO, PY2, StringIO
 
 class TestReaders(TestCase):
     delimiter = ","
+    expected_data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
     def setUp(self):
         self.file_type = "csv"
         self.test_file = "csv_book." + self.file_type
         self.data = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
-        self.expected_data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
         with open(self.test_file, "w") as f:
             for row in self.data:
                 f.write(self.delimiter.join(row) + "\n")
@@ -53,6 +53,25 @@ class TestReaders(TestCase):
 
 class TestReadersWithSemicolon(TestReaders):
     delimiter = ";"
+
+
+class TestReadersWithBadDelimiter(TestReaders):
+    delimiter = "o"
+    expected_data = [['1o2o3'], ['4o5o6'], ['7o8o9']]
+
+    def test_sheet_file_reader_delimiters(self):
+        r = CSVFileReader(NamedContent(self.file_type, self.test_file), delimiters=None)
+        result = list(r.to_array())
+        self.assertEqual(result, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+    def test_sheet_memory_reader_delimiters(self):
+        io = manager.get_io(self.file_type)
+        with open(self.test_file, "r") as f:
+            io.write(f.read())
+        io.seek(0)
+        r = CSVinMemoryReader(NamedContent(self.file_type, io), delimiters=None)
+        result = list(r.to_array())
+        self.assertEqual(result, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
 
 class TestWriter(TestCase):

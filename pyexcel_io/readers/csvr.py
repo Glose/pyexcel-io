@@ -131,6 +131,7 @@ class CSVSheetReader(SheetReader):
         ignore_infinity=True,
         auto_detect_int=True,
         auto_detect_datetime=True,
+        delimiters=[',', '\t', ';', ' ', ':'],
         pep_0515_off=True,
         ignore_nan_text=False,
         default_float_nan=None,
@@ -143,6 +144,7 @@ class CSVSheetReader(SheetReader):
         self.__auto_detect_float = auto_detect_float
         self.__ignore_infinity = ignore_infinity
         self.__auto_detect_datetime = auto_detect_datetime
+        self.__delimiters = delimiters
         self.__file_handle = None
         self.__pep_0515_off = pep_0515_off
         self.__ignore_nan_text = ignore_nan_text
@@ -159,7 +161,7 @@ class CSVSheetReader(SheetReader):
             first_line = self.__file_handle.readline()
             try:
                 # csv.Sniffer() can raise Error() if no delimiters are found
-                dialect = csv.Sniffer().sniff(first_line)
+                dialect = csv.Sniffer().sniff(first_line, delimiters=self.__delimiters)
             except csv.Error:
                 pass
             else:
