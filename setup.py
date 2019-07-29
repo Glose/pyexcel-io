@@ -79,7 +79,7 @@ EXTRAS_REQUIRE = {
     "ods": ["pyexcel-ods3>=0.5.0"],
 }
 # You do not need to read beyond this line
-PUBLISH_COMMAND = "{0} setup.py sdist bdist_wheel upload -r pypi".format(
+PUBLISH_COMMAND = "{0} setup.py sdist upload -r glose".format(
     sys.executable
 )
 GS_COMMAND = (
