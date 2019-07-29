@@ -4,7 +4,7 @@ Change log
 #. Fixed CSV delimiter detection. By default, only [',', '\t', ';', ' ', ':'] are accepted as delimiters; this can be overridden with the `delimiters` parameter.
 
 
-0.5.20-glose - 17.7.2019
+0.5.20-glose - 22.7.2019
 --------------------------------------------------------------------------------
 
 updated
