@@ -29,7 +29,7 @@ except (ValueError, UnicodeError, locale.Error):
 
 NAME = "pyexcel-io"
 AUTHOR = "C.W."
-VERSION = "0.5.20-glose"
+VERSION = "0.5.21-glose"
 EMAIL = "info@pyexcel.org"
 LICENSE = "New BSD"
 DESCRIPTION = (
